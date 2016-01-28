@@ -1,0 +1,29 @@
+@import 'variables'
+
+body
+	// background-color: #cfcfcf
+	font-family: $font-stack
+
+div
+	box-sizing: border-box
+
+.wrapper
+	background: url(/background.jpg)	
+	display: flex
+	position: fixed
+	top: 0
+	left: 0
+	right: 0
+	bottom: 0
+	align-items: center
+	justify-content: center
+
+	.spacer-top
+		align-self: flex-start
+		transition: height 1s ease-in-out
+
+	.spacer-bottom
+		align-self: flex-end
+
+@import 'modules/deploy'
+@import 'modules/live-output'

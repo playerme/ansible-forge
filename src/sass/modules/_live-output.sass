@@ -1,0 +1,41 @@
+.live-output
+	min-width: 800px
+
+	&--header
+		display: flex
+		background-color: #d8d8d8
+		padding: 15px
+		font-size: 1.4em
+
+		&--text
+			font-weight: bold
+			flex: 1 2 50%
+
+		&--status
+			label
+				padding: 4px
+				border-radius: 3px
+				color: #efefef
+				display: inline-block
+				font-weight: bold
+				font-size: 0.65em
+
+			.status
+				&--failed
+					background-color: red
+				&--unknown
+					background-color: blue
+				&--finished
+					background-color: green
+				&--running
+					background-color: black
+
+	&--content
+		font-family: monospace
+		background-color: #00030f
+		height: 1000px
+		color: #efefef
+		padding: 15px
+
+		pre
+			margin: 0
