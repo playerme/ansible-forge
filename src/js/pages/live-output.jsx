@@ -1,7 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import io from 'socket.io-client'
 import atohLib from 'ansi-to-html'
+import io from 'socket.io-client'
+import superagent from 'superagent' 
+
 import { Scrollbars } from 'react-custom-scrollbars';
 
 const atoh = new atohLib()
@@ -14,6 +16,10 @@ export class LiveOutput extends React.Component {
 			data: "",
 			status: 'unknown'
 		}
+
+		superagent.get(`/api/shell/${this.props.params.id}`).end((err, data) => {
+			data.body.frames.forEach(frame => this.processData(frame))
+		})
 	}
 
 	componentDidMount() {
@@ -24,21 +30,7 @@ export class LiveOutput extends React.Component {
 		s.on('shell', (data) => {
 			console.log('shell socket data\n',data)
 
-			switch(data.type) {
-				case 'progress':
-					let last = self.state.data;
-					self.setState({data: last+data.data})
-					break
-				case 'start':
-					self.setState({status: 'running'})
-					break
-				case 'end':
-					self.setState({status: 'finished'})
-					break
-				case 'error':
-					self.setState({status: 'failed'})
-					break
-			}
+			this.processData(data)
 
 		})
 			
@@ -74,6 +66,23 @@ export class LiveOutput extends React.Component {
 			</div>
 		</div>
 	}
+
+	processData(data) {
+		switch(data.type) {
+			case 'start':
+				this.setState({status: 'running'})
+			case 'progress':
+				let last = this.state.data;
+				this.setState({data: last+data.data})
+				break
+			case 'end':
+				this.setState({status: 'finished'})
+				break
+			case 'error':
+				this.setState({status: 'failed'})
+				break
+		}
+	} 
 }
 
 class Shell extends React.Component {

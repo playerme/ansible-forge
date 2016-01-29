@@ -1,19 +1,5 @@
-import uuid from 'node-uuid'
+export function doRouting(r, F) {
 
-import {
-	Users
-} from './data'
-
-import { spawnAnsible } from './runner'
-
-export function doRouting(r, io) {
-
-	r.post('/deploy-this-shit!', (req, res) => {
-		let ansibleArgs = '-i dev-inv test.yml'
-
-		let shellId = uuid.v4()
-
-		res.send({id: shellId})
-		spawnAnsible(ansibleArgs, (type, data) => io.of('/shell/'+shellId).volatile.emit('shell', {type: type, data: data}))
-	})
+	r.get('/shell/:id', F.getDeploy.bind(F))
+	r.post('/deploy', F.newDeploy.bind(F))
 }

@@ -63,7 +63,7 @@ class DeployButton extends React.Component {
 
 		this.setState({deploying: true})
 		console.log('doing deploy')
-		superagent.post('/api/deploy-this-shit!').end((err, data) => {
+		superagent.post('/api/deploy').send({which: "-i dev-inv test.yml", flags: { superimportant: { "foo": "bar", "quux": "koo" } }}).end((err, data) => {
 			
 			this.setState({deploying: false})	
 

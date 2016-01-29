@@ -1,3 +1,4 @@
+"use strict"
 import express from 'express'
 import bodyParser from 'body-parser'
 import fs from 'fs'
@@ -6,6 +7,7 @@ import ioPkg from 'socket.io'
 import morgan from 'morgan'
 
 import { doRouting } from './routes'
+import Forge from './Forge'
 
 var app = express()
 const r = express.Router()
@@ -15,10 +17,11 @@ var io = ioPkg(s)
 
 io.on('connection', (socket) => {
 	console.log('a connection appeared!')
-	socket.join('shell-1')
 })
 
-doRouting(r, io)
+const F = new Forge(io)
+
+doRouting(r, F)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
