@@ -1,106 +1,42 @@
 import React from 'react'
-import superagent from 'superagent'
-import history from '../utils/history'
+import { connect } from 'react-redux'
 
-export class Deploy extends React.Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			opened: false, //ignoring this for now
-			config: {},
-		}
-
-		let mockConfig = [
-			{ name: "branch", type: "text", default: "master" },
-			{ name: "build_branch", type: "text" },
-			{ name: "skip_build", type: "toggle", default: false },
-			{ name: "skip_migrations", type: "toggle", default: false },
-			{ name: "only_deploy", type: "toggle", default: true },
-			{ name: "private", type: "toggle", default: false },
-			{ name: "remove", type: "toggle", default: false },
-		]
-
-		this.props = {
-			configOptions: mockConfig,
-		}
-	}
-
-	setConfig(data) {
-		this.setState({config: data})
-	}	
-
-	render() {
-		return <div>
-			<DeployButton {...this.props} {...this.state} setConfig={this.setConfig} />
-		</div>
-	}
-}
+import * as DeployActions from '../reducers/deploy'
 
 class DeployButton extends React.Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			deploying: false
-		}
-	}
 
 	render() {
 		return <div className="deploy-button">
-			<div className="deploy-button--big-green-button™" onMouseDown={this.doDeploy.bind(this)}>
+			<div className="deploy-button--big-green-button™" onMouseUp={this.props.deployActions.doDeploy}>
 				Deploy!
 			</div>
-			<DeployOptions {...this.props.config} />
+			<DeployOptions {...this.props} />
 		</div>
-	}
-
-	doDeploy() {
-
-		if (this.state.deploying) {
-			return;
-		}
-
-		this.setState({deploying: true})
-		console.log('doing deploy')
-		superagent.post('/api/deploy').send({which: "-i dev-inv test.yml", flags: { superimportant: { "foo": "bar", "quux": "koo" } }}).end((err, data) => {
-			
-			this.setState({deploying: false})	
-
-			if (err !== null) {
-				throw err
-			}
-
-			history.pushState(null, '/shell/'+data.body.id)
-
-		})
 	}
 }
 
+export default connect((state) => {
+	return {
+		...state.deploy,
+		deployActions: DeployActions,
+	}
+})(DeployButton)
+
 class DeployOptions extends React.Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			opened: props.opened,
-			config: props.config,
-		}
-	}
-
-	setConfig(data) {
-		this.props.setConfig(data)
-	}
-
 	render() {
-		let paneClass = 'closed'
+		let paneClass = [
+			"deploy-button--options--pane",
+		]
 
-		if (this.state.opened) {
-			paneClass = 'opened'
+		if (this.props.optionPane) {
+			paneClass.push('opened')
+		} else {
+			paneClass.push('closed')
 		}
 
 		return <div className="deploy-button--options">
-			<div onClick={this.setState.bind(this, {opened: !this.state.opened})}>Or do something special...</div>
-			<div className="deploy-button--options--pane deploy-button--options--pane_{paneClass}">
+			<div onClick={() => this.props.dispatch({type: 'deploy.op_toggle'})}>Or do something special...</div>
+			<div className={paneClass.join(' ')}>
 				the pane
 			</div>
 		</div>
@@ -123,3 +59,4 @@ class Option extends React.Component {
 		}
 	}
 }
+

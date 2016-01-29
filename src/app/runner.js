@@ -5,6 +5,7 @@ const ansibleDir = "../Ansible"
 export function spawnAnsible(args, cb) {
 	process.env.PYTHONUNBUFFERED = 1
 	process.env.ANSIBLE_FORCE_COLOR = 1
+	process.env.ANSIBLE_NOCOWS = 1
 
 	cb('start', `<span style="color:#f0f">forge&gt;</span> <span style="color:#ff0">ansible-playbook ${args}</span>\nStarted at <span style="color:#0ff">${new Date()}</span>\n\n`)
 

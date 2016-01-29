@@ -8,6 +8,14 @@
 
 - control panel
 
+- graphql+relay?
+
+- isomorphic fetch
+
+- ✅ webpack
+
+- ✅ redux
+
 - ✅ save shell outputs
 
 - ✅ prefill missing shell outputs (needs ^)
