@@ -6,6 +6,7 @@ import history from './utils/history'
 
 import Deploy from './pages/deploy'
 import LiveOutput from './pages/live-output'
+import TempList from './pages/temp-list'
 
 import store from './store'
 
@@ -26,6 +27,7 @@ class Forge extends React.Component {
 				<Route path="/" component={Root}>
 					<Route path="deploy" component={Deploy} />
 					<Route path="shell/:id" component={LiveOutput} />
+					<Route path="tempshells" component={TempList} />
 				</Route>
 			</Router>
 		</Provider>

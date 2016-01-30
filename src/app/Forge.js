@@ -73,7 +73,7 @@ export default class Forge {
 	}
 
 	indexShells() {
-		return this.r.table('shells').run()
+		return this.r.table('shells').orderBy({index: this.r.desc('started_at')}).run()
 	}
 
 	//
@@ -115,6 +115,12 @@ export default class Forge {
 	getDeploy(req, res) {
 		this.getShell(req.params.id).then((row, err) => {
 			res.send(row)
+		})
+	}
+
+	getDeploys(req, res) {
+		this.indexShells().then((rows, err) => {
+			res.send(rows)
 		})
 	}
 

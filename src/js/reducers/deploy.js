@@ -60,6 +60,7 @@ export default function reducer(state = initialState, action = {}) {
 				deploying: true
 			}
 
+
 		default:
 
 			return state
