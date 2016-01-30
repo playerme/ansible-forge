@@ -107,7 +107,7 @@ gulp.task('js:build', cb => {
 	return gulp.src(paths.app_js)
 		.pipe(plumber())
 		.pipe(babel({ presets: ['es2015', 'stage-0', 'react'], plugins: ["transform-regenerator", "transform-runtime"] }))
-		.pipe(gulp.dest('dist'))
+		.pipe(gulp.dest('dist/app'))
 })
 
 gulp.task('js:watch', cb => {
@@ -181,5 +181,5 @@ gulp.task("webpack-dev-server", function(cb) {
 
 //gulp.task('dist', ['js:dist', 'sass:dist'])
 gulp.task('watch', ['sass:watch', 'js:watch', 'webpack-dev-server'])
-gulp.task('dev', ['sass'])
+gulp.task('dev', ['sass', 'js:build'])
 gulp.task('default', ['watch', 'dev'])
