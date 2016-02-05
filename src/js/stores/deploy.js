@@ -78,7 +78,12 @@ export function doDeploy() {
 	// get opts, toss them in!
 	// but first, let's reimplement.
 	return (dispatch, getState) => {
-		console.log(getState())
+		let { deploy: { currentlySelected } } = getState()
+
+		superagent.post('/api/deploy').send({ flags: currentlySelected, which: '-i dev-inv test.yml' }).end((err, res) => {
+			// use redux-router
+			history.pushState(null, `/shell/${res.body.id}`)
+		})
 	}
 }
 
