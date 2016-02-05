@@ -46,7 +46,7 @@ class Forge extends React.Component {
 			<Provider store={store}>
 				<Router history={history}>
 					<Route path="/" component={Root}>
-						<Route path="deploy" component={Deploy} />
+						<Route path="deploy/:slug" component={Deploy} />
 						<Route path="shell/:id" component={Shell} />
 						<Route path="tempshells" component={TempList} />
 					</Route>

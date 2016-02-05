@@ -11,15 +11,6 @@ import {
 } from '../const'
 
 class DeployOptions extends React.Component {
-	componentWillMount() {
-		// stopgap for testing
-		let opts = [
-			{flag: 'superimportant', default: 'yes', label: 'Superimportant Field', type: 'text', description: 'Something that totally needs to be set 100% no decieve'},
-			{flag: 'fail', default: true, label: 'Fail', type: 'checkbox', description: 'Should we fail?'},
-		]
-		this.props.dispatch({type: DEPLOY_OPTIONS_LOADED, data: opts})
-	}
-
 	actions(action, extra) {
 		let { dispatch, deployActions } = this.props
 
@@ -35,10 +26,12 @@ class DeployOptions extends React.Component {
 		//<input value={this.props.currentlySelected.superimportant} onChange={this.actions('optionChange', 'superimportant')} />
 		let options = this.props.options.map((v) => { return <tr key={v.flag} title={v.description}>
 			<td key={v.flag + '-label'} style={style.options.label}><label>{v.label}</label></td>
-			<td key={v.flag + '-opt'} style={style.options.option}><input 
+			<td key={v.flag + '-opt'} style={style.options.option}>
+			<input 
 				key={v.flag} 
 				type={v.type} 
-				value={this.props.currentlySelected[v.flag]}
+				value={this.props.currentlySelected.get(v.flag)}
+				checked={this.props.currentlySelected.get(v.flag)}
 				onChange={this.actions('optionChange', {flag: v.flag, type: v.type})} />
 			</td></tr> })
 
@@ -66,15 +59,19 @@ DeployOptions = connect((state) => {
 
 
 class DeployButton extends React.Component {
-
-	actions(action) {
-		let { dispatch, deployActions } = this.props
+	actions(action, extra) {
+		let { dispatch, deployActions, params: { slug } } = this.props
 
 		let Actions = {
-			doDeploy: () => { dispatch(deployActions.doDeploy()) }
+			doDeploy: () => { dispatch(deployActions.doDeploy(slug)) },
+			loadPlaybook: () => { dispatch(deployActions.loadPlaybook(slug)) }
 		}
 
 		return Actions[action]
+	}
+
+	componentWillMount() {
+		this.actions('loadPlaybook')()
 	}
 
 	render() {

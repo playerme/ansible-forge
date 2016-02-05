@@ -1,12 +1,13 @@
 # TODO ✅
 
-- ansible flag builder (using and setting)
 
 - task generation
 
 - user system
 
 - control panel
+
+- ✅ ansible flag builder (using and setting)
 
 - ✅ improve styling (responsive?)
 

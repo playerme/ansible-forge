@@ -3,6 +3,8 @@ import uuid from 'node-uuid'
 
 import { spawnAnsible } from './runner'
 
+// TODO: figure out how to separate this hulking shitty monolith.
+
 export default class Forge {
 	constructor(socketIo, rethinkDb) {
 		this.io = socketIo
@@ -92,22 +94,25 @@ export default class Forge {
 	// API CONTROLLERS
 	//
 	newDeploy(req, res) {
-		let which = req.body.which || "-i dev-inv test.yml"
-		let flags = ""
+		this.r.table('playbooks').filter({ slug: req.params.slug }).run().then((d) => {
+			let flags = ""
+			let which = d[0].scheme
 
-		if (req.body.flags !== undefined) {
-			flags = "-e '"+JSON.stringify(req.body.flags)+"'"
-		}
+			if (req.body.flags !== undefined) {
+				flags = "-e '"+JSON.stringify(req.body.flags)+"'"
+			}
 
-		let args = `${which} ${flags}`.trim()
-		
-		this.newShell(args).then((result) => {
+			let args = `${which} ${flags}`.trim()
+			
+			this.newShell(args).then((result) => {
 
-			let id = result.generated_keys[0]
+				let id = result.generated_keys[0]
 
-			res.send({id: id})
+				res.send({id: id})
 
-			spawnAnsible(args, this.handleDeployShell.bind(this, id))
+				spawnAnsible(args, this.handleDeployShell.bind(this, id))
+				
+			})
 			
 		})
 	}
@@ -121,6 +126,47 @@ export default class Forge {
 	getDeploys(req, res) {
 		this.indexShells().then((rows, err) => {
 			res.send(rows)
+		})
+	}
+
+	getPlaybook(req, res) {
+		let slug = req.params.slug
+
+		this.r.table('playbooks').filter({ slug: slug }).run().then((d) => {
+			res.send(d[0])
+		}).catch((err) => { res.send(err) })
+	}
+
+	getPlaybooks(req, res) {
+		this.r.table('playbooks').run().then((d) => {
+			res.send(d)
+		})
+	}
+
+	updatePlaybook(req, res) {
+
+		let data = req.body.playbook
+
+		this.r.table('playbooks').filter({slug: req.params.slug}).update(data).run().then((d) => {
+			res.send(d)
+		})
+	}
+
+	newPlaybook(req, res) {
+		console.log(req.body)
+
+		let data = req.body.playbook
+
+		// TODO: check if slug collides
+
+		this.r.table('playbooks').insert([data]).run().then((d) => {
+			res.send(d)
+		})
+	}
+
+	deletePlaybook(req, res) {
+		this.r.table('playbooks').filter({slug: req.params.slug}).delete().run().then((d) => {
+			res.send(d)
 		})
 	}
 
