@@ -2,20 +2,21 @@ import io from 'socket.io-client'
 import superagent from 'superagent'
 // move to isomorphic-fetch asap
 
-const START = 'shell.start'
-const PROGRESS = 'shell.progress'
-const END = 'shell.end'
-const ERROR = 'shell.error'
-const SHELL_UNLOADED = 'shell.unloaded'
-
-const STATE_UNKNOWN = 'unknown'
-const STATE_RUNNING = 'running'
-const STATE_FINISHED = 'finished'
-const STATE_FAILED = 'failed'
+import {
+	SHELL_UNLOADED,
+	SHELL_START,
+	SHELL_PROGRESS,
+	SHELL_END,
+	SHELL_ERROR,
+	SHELL_STATE_UNKNOWN,
+	SHELL_STATE_RUNNING,
+	SHELL_STATE_FINISHED,
+	SHELL_STATE_FAILED,
+} from '../const'
 
 const initialState = {
 	data: "",
-	status: STATE_UNKNOWN,
+	status: SHELL_STATE_UNKNOWN,
 }
 
 export default function reducer(state = initialState, action = {}) {
@@ -23,32 +24,32 @@ export default function reducer(state = initialState, action = {}) {
 
 	switch(type) {
 
-		case START:
+		case SHELL_START:
 
 			return {
 				data: state.data+data,
-				status: STATE_RUNNING
+				status: SHELL_STATE_RUNNING
 			}
 
-		case PROGRESS:
+		case SHELL_PROGRESS:
 
 			return {
 				data: state.data+data,
 				status: state.status
 			}
 		
-		case END:
+		case SHELL_END:
 
 			return {
 				...state,
-				status: STATE_FINISHED
+				status: SHELL_STATE_FINISHED
 			}
 
-		case ERROR:
+		case SHELL_ERROR:
 
 			return {
 				...state,
-				status: STATE_FAILED
+				status: SHELL_STATE_FAILED
 			}
 
 		case SHELL_UNLOADED:

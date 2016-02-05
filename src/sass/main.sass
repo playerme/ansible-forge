@@ -1,29 +1,10 @@
-@import 'variables'
-
-body
-	// background-color: #cfcfcf
-	font-family: $font-stack
+body 
+	background-image: url(/background.jpg)
+	font-family: Helvetica Neue, Arial, sans-serif
+	margin: 0
+	padding: 0
+	border: 0
 
 div
 	box-sizing: border-box
 
-.wrapper
-	background: url(/background.jpg)	
-	display: flex
-	position: fixed
-	top: 0
-	left: 0
-	right: 0
-	bottom: 0
-	align-items: center
-	justify-content: center
-	transition: height 1s ease-in-out
-
-	.spacer-top
-		align-self: flex-start
-
-	.spacer-bottom
-		align-self: flex-end
-
-@import 'modules/deploy'
-@import 'modules/live-output'

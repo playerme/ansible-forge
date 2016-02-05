@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { Scrollbars } from 'react-custom-scrollbars'
 import moment from 'moment'
 
-import * as TempListActions from '../reducers/temp-list'
+import * as TempListActions from '../stores/temp-list'
 
 class TempList extends Component {
 
@@ -18,7 +18,7 @@ class TempList extends Component {
 		this.props.shellsIndex.forEach((i, k) => list.push(<ShellEntry key={k} {...i} />))
 
 		return <div style={{backgroundColor: '#efefef'}}>
-			<Scrollbars style={{height: 1057, width: 800}}>
+			<Scrollbars>
 				<table style={{width: 800, padding: 15}}>
 					<tbody>
 						<tr><th>Arg List</th><th>State</th><th>Age</th><th>Actions</th></tr>

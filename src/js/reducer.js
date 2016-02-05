@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 
-import liveOutput from './reducers/live-output'
-import deploy from './reducers/deploy'
-import tempList from './reducers/temp-list'
+import shell from './stores/shell'
+import deploy from './stores/deploy'
+import tempList from './stores/temp-list'
 
 export default combineReducers({
-	liveOutput,
+	shell,
 	deploy,
 	tempList
 })

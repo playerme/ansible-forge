@@ -8,9 +8,7 @@
 
 - control panel
 
-- graphql+relay?
-
-- isomorphic fetch
+- ✅ improve styling (responsive?)
 
 - ✅ webpack
 

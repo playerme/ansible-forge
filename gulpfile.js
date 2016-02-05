@@ -30,7 +30,7 @@ const paths = {
 	app_js: 'src/app/**/*.js',
 	browser_js: 'src/js/**/*.+(js|jsx)',
 	js: 'src/**/*.+(js|jsx)',
-	sass: 'src/**/*.s?ss'
+	sass: 'src/sass/**/*.s?ss'
 }
 
 const babelrc = fs.readFileSync('./.babelrc');
