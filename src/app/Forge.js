@@ -21,6 +21,10 @@ export default class Forge {
 		return rethinkdbdash({db: 'forge'})
 	}
 
+	getRethinkDB() {
+		return this.r
+	}
+
 	//
 	// DATA
 	//
