@@ -15,16 +15,22 @@ const initialState = {
 	currentlySelected: Map(),
 	optionsPane: false,
 	deploying: false,
+	requireOptions: false,
+	playbook: {}
 }
 
 export default function reducer(state = initialState, action = {}) {
 	let { type, data } = action
 
-	// console.log(type)
+	// console.log(type)v 
 
 	switch(type) {
 
 		case DEPLOY_OP_TOGGLE:
+			
+			if (state.requireOptions) {
+				return state
+			}
 
 			return {
 				...state,
@@ -33,6 +39,7 @@ export default function reducer(state = initialState, action = {}) {
 
 
 		case DEPLOY_OPTION_CHANGE:
+
 
 			let newData = state.currentlySelected.merge(data)
 
@@ -47,7 +54,7 @@ export default function reducer(state = initialState, action = {}) {
 
 			let tmp = {}
 
-			data.forEach((opt) => {
+			data.options.forEach((opt) => {
 				tmp[opt.flag] = opt.default
 			})
 
@@ -55,8 +62,11 @@ export default function reducer(state = initialState, action = {}) {
 
 			return {
 				...state,
-				options: Set(data),
+				options: Set(data.options),
 				currentlySelected: currentlySelected,
+				optionsPane: data.requireOptions || state.optionsPane,
+				requireOptions: data.requireOptions,
+				playbook: data
 			}
 
 
@@ -113,7 +123,7 @@ export function loadPlaybook(slug) {
 
 		superagent.get(`/api/playbook/${slug}`).end((err, res) => {
 
-			dispatch({type: DEPLOY_OPTIONS_LOADED, data: res.body.options })
+			dispatch({type: DEPLOY_OPTIONS_LOADED, data: res.body })
 
 		})
 

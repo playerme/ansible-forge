@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Router, Route } from 'react-router'
+import { Router, Route, IndexRoute } from 'react-router'
 import { Provider } from 'react-redux'
 import Radium, { StyleRoot } from 'radium'
 import history from './utils/history'
@@ -8,6 +8,7 @@ import history from './utils/history'
 import Deploy from './ui/deploy'
 import Shell from './ui/shell'
 import TempList from './ui/temp-list'
+import PlaybooksIndex from './ui/playbooks-index'
 
 import store from './store'
 import style from './styles/root'
@@ -48,7 +49,9 @@ class Forge extends React.Component {
 					<Route path="/" component={Root}>
 						<Route path="deploy/:slug" component={Deploy} />
 						<Route path="shell/:id" component={Shell} />
+						<Route path="playbooks" component={PlaybooksIndex} />
 						<Route path="tempshells" component={TempList} />
+						<IndexRoute component={PlaybooksIndex} />
 					</Route>
 				</Router>
 			</Provider>

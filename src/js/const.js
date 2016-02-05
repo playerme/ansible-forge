@@ -2,7 +2,8 @@
 //
 // style vars
 //
-export const STYLE_PRIMARY = '#0f4'
+export const STYLE_PRIMARY = '#15C822'
+export const STYLE_PRIMARY_HOVER = '#319A39'
 export const STYLE_DARK = '#00090c'
 export const STYLE_TEXT_LIGHT = '#efefef'
 export const STYLE_TEXT_DARK = '#00090c'
@@ -31,3 +32,9 @@ export const DEPLOY_OPTION_CHANGE = 'deploy.option_change'
 export const DEPLOY_OPTIONS_LOADED = 'deploy.options_loaded'
 export const DEPLOY_OP_TOGGLE = 'deploy.op_toggle'
 export const DEPLOY_TRIGGER = 'deploy.trigger'
+
+
+//
+// PLAYBOOKS
+//
+export const PLAYBOOKS_INDEX_LOADED = 'playbooks.index_loaded'
