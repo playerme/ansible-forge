@@ -79,9 +79,15 @@ export function doDeploy(slug) {
 	// get opts, toss them in!
 	// but first, let's reimplement.
 	return (dispatch, getState) => {
-		let { deploy: { currentlySelected } } = getState()
+		let { deploy: { currentlySelected, optionsPane } } = getState()
 
-		superagent.post(`/api/deploy/${slug}`).send({ flags: currentlySelected }).end((err, res) => {
+		let data = {}
+
+		if (optionsPane) {
+			data.flags = currentlySelected
+		}
+
+		superagent.post(`/api/deploy/${slug}`).send(data).end((err, res) => {
 			// use redux-router
 			history.pushState(null, `/shell/${res.body.id}`)
 		})
