@@ -20,7 +20,9 @@ const gulp 		 	= require('gulp')
 const gutil			= require('gulp-util')
 const hash          = require('gulp-hash')
 const notify 	 	= require('gulp-notify')
+const mustache      = require('gulp-mustache')
 const plumber 	 	= require('gulp-plumber')
+const rename        = require('gulp-rename')
 const runSequence 	= require('run-sequence')
 const sass 			= require('gulp-sass')
 const uglify        = require('gulp-uglify')
@@ -166,6 +168,17 @@ gulp.task('sass:watch', cb => {
 	gulp.watch(paths.sass, ['sass'])
 })
 
+gulp.task('index:build', cb => {
+    return gulp.src('static/index.html.tmpl')
+        .pipe(mustache({
+            dev: process.env.NODE_ENV !== 'production',
+            devserverHost: host,
+            devserverPort: port,
+        }))
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest('static'))
+})
+
 const devCompiler = webpack(webpackConfig);
 
 gulp.task("webpack-dev-server", function(cb) {
@@ -218,7 +231,7 @@ gulp.task("webpack-dev-server", function(cb) {
     process.on('SIGINT', gracefulShutdown);
 });
 
-gulp.task('dist', ['clean', 'js:build', 'js:dist', 'sass'])
+gulp.task('dist', ['js:build', 'js:dist', 'sass', 'index:build'])
 gulp.task('watch', ['sass:watch', 'js:watch', 'webpack-dev-server'])
-gulp.task('dev', ['sass', 'js:build'])
+gulp.task('dev', ['sass', 'index:build', 'js:build'])
 gulp.task('default', ['watch', 'dev'])

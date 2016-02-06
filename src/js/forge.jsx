@@ -43,6 +43,13 @@ class Forge extends React.Component {
 	}
 
 	render() {
+
+		let devRuler = ""
+
+		if (__DEVELOPMENT__) {
+			devRuler = <DevRuler />
+		}
+
 		return <StyleRoot>
 			<Provider store={store}>
 				<Router history={history}>
@@ -55,7 +62,7 @@ class Forge extends React.Component {
 					</Route>
 				</Router>
 			</Provider>
-			<DevRuler/>
+			{devRuler}
 		</StyleRoot>
 	}
 }

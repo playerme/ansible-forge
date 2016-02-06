@@ -7,4 +7,9 @@
 
 <div class="container"></div>
 
-<script src="//localhost:3030/dist/main.js"></script>
+{{#dev}}
+<script src="//{{devserverHost}}:{{devserverPort}}/dist/main.js"></script>
+{{/dev}}
+{{^dev}}
+<script src="/dist/js/main.js">
+{{/dev}}
