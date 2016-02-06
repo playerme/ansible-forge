@@ -18,10 +18,12 @@ const del 		 	= require('del')
 const fs 			= require('fs')
 const gulp 		 	= require('gulp')
 const gutil			= require('gulp-util')
+const hash          = require('gulp-hash')
 const notify 	 	= require('gulp-notify')
 const plumber 	 	= require('gulp-plumber')
 const runSequence 	= require('run-sequence')
 const sass 			= require('gulp-sass')
+const uglify        = require('gulp-uglify')
 const webpack 		= require('webpack')
 const webpackStream = require('webpack-stream')
 const WebpackServer = require('webpack-dev-server')
@@ -36,6 +38,12 @@ const paths = {
 const babelrc = fs.readFileSync('./.babelrc');
 let babelConfig = {};
 babelConfig = JSON.parse(babelrc);
+
+const hashOptions = {
+    algorithm: 'md5',
+    hashLength: 10,
+    template: '<%= name %>.<%= hash %><%= ext %>'
+};
 
 const host = argv.host || 'localhost'
 const port = argv.port || 3030
@@ -110,6 +118,37 @@ gulp.task('js:build', cb => {
 		.pipe(gulp.dest('dist/app'))
 })
 
+gulp.task('js:webpack', cb => {
+
+    webpackConfig.module = productionLoaders
+    webpackConfig.plugins.push(
+        new webpack.DefinePlugin({
+            __CLIENT__: true,
+            __SERVER__: false,
+            __DEVELOPMENT__: false,
+            __DEVTOOLS__: false,  // <-------- DISABLE redux-devtools HERE
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        })
+    )
+
+    return gulp.src(paths.browser_js)
+        .pipe(webpackStream(webpackConfig))
+        .pipe(gulp.dest('dist/js'))
+})
+
+gulp.task('js:minify', cb => {
+    return gulp.src('dist/js/*.js')
+            .pipe(uglify())
+            //.pipe(hash(hashOptions))
+            .pipe(gulp.dest("dist/js"))
+})
+
+gulp.task('js:dist', cb => {
+    runSequence('js:webpack', 'js:minify', cb)
+})
+
 gulp.task('js:watch', cb => {
 	gulp.watch(paths.app_js, ['js:build'])
 })
@@ -179,7 +218,7 @@ gulp.task("webpack-dev-server", function(cb) {
     process.on('SIGINT', gracefulShutdown);
 });
 
-//gulp.task('dist', ['js:dist', 'sass:dist'])
+gulp.task('dist', ['clean', 'js:build', 'js:dist', 'sass'])
 gulp.task('watch', ['sass:watch', 'js:watch', 'webpack-dev-server'])
 gulp.task('dev', ['sass', 'js:build'])
 gulp.task('default', ['watch', 'dev'])
