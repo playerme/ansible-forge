@@ -9,6 +9,8 @@ import Deploy from './ui/deploy'
 import Shell from './ui/shell'
 import TempList from './ui/temp-list'
 import PlaybooksIndex from './ui/playbooks-index'
+import ShellIndex from './ui/shells-index'
+// import PlaybooksEdit from './ui/playbooks-edit'
 
 import store from './store'
 import style from './styles/root'
@@ -56,8 +58,9 @@ class Forge extends React.Component {
 					<Route path="/" component={Root}>
 						<Route path="deploy/:slug" component={Deploy} />
 						<Route path="shell/:id" component={Shell} />
-						<Route path="playbooks" component={PlaybooksIndex} />
 						<Route path="tempshells" component={TempList} />
+						<Route path="playbooks" component={PlaybooksIndex} />
+						<Route path="shells" component={ShellIndex} />
 						<IndexRoute component={PlaybooksIndex} />
 					</Route>
 				</Router>
@@ -66,5 +69,6 @@ class Forge extends React.Component {
 		</StyleRoot>
 	}
 }
+						// <Route path="playbooks/:slug" component={PlaybooksEdit} />
 
 render(<Forge />, document.querySelector('.container'))

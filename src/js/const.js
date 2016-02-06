@@ -22,6 +22,7 @@ export const SHELL_STATE_RUNNING = 'running'
 export const SHELL_STATE_FINISHED = 'finished'
 export const SHELL_STATE_FAILED = 'failed'
 export const SHELL_UNLOADED = 'shell.unloaded'
+export const SHELL_INDEX_LOADED = 'shell.index_loaded'
 
 
 //

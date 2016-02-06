@@ -1,26 +1,27 @@
 import superagent from 'superagent'
 import history from '../utils/history'
-import { Map, Set } from 'immutable'
 
 import {
-	PLAYBOOKS_INDEX_LOADED
+	SHELL_INDEX_LOADED
 } from '../const'
 
 const initialState = {
-	playbooks: [],
+	shells: [],
 }
 
 export default function reducer(state = initialState, action = {}) {
 
 	let { type, data } = action
 
+	console.log(type)
+
 	switch(type) {
 
-		case PLAYBOOKS_INDEX_LOADED: 
+		case SHELL_INDEX_LOADED: 
 
 			return {
 				...state,
-				playbooks: data
+				shells: data
 			}
 
 		default:
@@ -30,13 +31,13 @@ export default function reducer(state = initialState, action = {}) {
 	}
 }
 
-export function fetchPlaybooks() {
+export function fetchShells() {
 
 	return (dispatch) => {
 
-		superagent.get('/api/playbooks').end((err, res) => {
+		superagent.get('/api/shells').end((err, res) => {
 
-			dispatch({ type: PLAYBOOKS_INDEX_LOADED, data: res.body })
+			dispatch({ type: SHELL_INDEX_LOADED, data: res.body })
 
 		})
 

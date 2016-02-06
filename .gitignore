@@ -1,5 +1,6 @@
 node_modules
 rethinkdb_data
 dist
+static/index.html
 .DS_Store
 */.DS_Store

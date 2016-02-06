@@ -8,8 +8,8 @@
 <div class="container"></div>
 
 {{#dev}}
-<script src="//{{devserverHost}}:{{devserverPort}}/dist/main.js"></script>
+<script defer async src="//{{devserverHost}}:{{devserverPort}}/dist/main.js"></script>
 {{/dev}}
 {{^dev}}
-<script src="/dist/js/main.js">
+<script defer async src="/dist/js/main.js"></script>
 {{/dev}}

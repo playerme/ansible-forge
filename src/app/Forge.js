@@ -28,13 +28,14 @@ export default class Forge {
 	//
 	// DATA
 	//
-	newShell(args) {
+	newShell(scheme, args) {
 
 		let data = {
 			args: args,
 			started_at: this.r.now(),
 			state: 'initializing',
 			frames: [],
+			playbook: scheme,
 		}
 
 		return this.r.table('shells').insert([data]).run()
@@ -52,24 +53,29 @@ export default class Forge {
 		let frames = this.frameCache[id]
 		frames.push(data)
 		
-		let flush = () => {
+		let flush = (state = 'running') => {
 			console.log('flushed')
-			this.r.table('shells').get(id).update({frames: frames}).run()
+			this.r.table('shells').get(id).update({frames: frames, state: state}).run()
 		}
 
 		if(data.type === 'start') {
 			this.frameIntv[id] = setInterval(flush, 1000*1)
 		}
 
+		let state
+
 		switch(data.type) {
 			case 'end':
+				state = 'finished'
 			case 'error':
+				state = state || 'errored'
 				clearInterval(this.frameIntv[id])
-				flush()
+				flush(state)
 				this.frameIntv[id] = this.frameCache[id] = frames = undefined
 				break
 			case 'start':
-				flush()
+				state = 'started'
+				flush(state)
 		}
 
 	}
@@ -98,7 +104,9 @@ export default class Forge {
 	// API CONTROLLERS
 	//
 	newDeploy(req, res) {
-		this.r.table('playbooks').filter({ slug: req.params.slug }).run().then((d) => {
+		let slug = req.params.slug
+
+		this.r.table('playbooks').filter({ slug: slug }).run().then((d) => {
 			let flags = ""
 			let which = d[0].scheme
 
@@ -108,7 +116,7 @@ export default class Forge {
 
 			let args = `${which} ${flags}`.trim()
 			
-			this.newShell(args).then((result) => {
+			this.newShell(slug, args).then((result) => {
 
 				let id = result.generated_keys[0]
 

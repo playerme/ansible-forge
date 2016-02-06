@@ -49,7 +49,12 @@ if (argv.create || argv.dev) {
 	}).then(() => {
 
 		console.log('> Creating table: shells')
-		return r.tableCreate('shells').run()
+		return r.tableCreate('shells').run()})
+
+	.then(() => {
+
+		console.log('> Creating shells index: started_at')
+		return r.table('shells').indexCreate('started_at').run()
 		
 	}).then(() => {
 
