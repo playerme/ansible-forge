@@ -21,7 +21,7 @@ class Root extends React.Component {
 			<div style={style.spacerTop}></div>
 			<div style={style.content}>{this.props.children}
 				<div style={style.links}>
-					<Link to="/">Forge Home</Link>
+					[<Link to="/">Forge Home</Link>] [<Link to="/shells">Shell History</Link>]
 				</div>
 			</div>
 			<div style={style.spacerBottom}></div>
