@@ -1,25 +1,32 @@
 # TODO ✅
 
 
-- task generation
-
-- styling pass
-
-- cleanup
-
-- improve logging
-
-- tests (jest+??)
-
+## 1.1
 - user system
 
 - control panel
 
-- configuration
+- tests (jest+??)
+
+- improve logging
 
 - more robust migrations?
 
-- redux-router?
+- slack pings
+
+
+## 1.0
+- styling pass
+
+- UX pass
+
+- cleanup
+
+- configuration
+
+- ✅ task generation
+
+- ✅ redux-router?
 
 - ✅ production mode / dist
 
