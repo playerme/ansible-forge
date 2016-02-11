@@ -1,6 +1,5 @@
 import superagent from 'superagent'
 import { routeActions } from 'react-router-redux'
-import history from '../utils/history'
 import { Map, Set } from 'immutable'
 
 import {

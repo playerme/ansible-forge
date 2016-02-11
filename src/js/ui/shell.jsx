@@ -23,8 +23,9 @@ const actionMap = (dispatch) => {
 	}
 }
 
-
-class Shell extends React.Component {
+@connect(mapState, actionMap)
+@Radium
+export default class Shell extends React.Component {
 
 	componentWillMount() {
 		this.props.actions.loadShell(this.props.params.id)
@@ -75,6 +76,3 @@ class ANSI extends React.Component {
 		return <pre dangerouslySetInnerHTML={spookyDangerousHTML}/>
 	}
 }
-
-Shell = Radium(Shell)
-export default connect(mapState, actionMap)(Shell)

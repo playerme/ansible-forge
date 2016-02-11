@@ -1,5 +1,4 @@
 import superagent from 'superagent'
-import history from '../utils/history'
 
 import {
 	SHELL_INDEX_LOADED

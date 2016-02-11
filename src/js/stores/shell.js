@@ -1,6 +1,5 @@
 import io from 'socket.io-client'
 import superagent from 'superagent'
-// move to isomorphic-fetch asap
 
 import {
 	SHELL_UNLOADED,

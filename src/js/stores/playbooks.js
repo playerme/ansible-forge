@@ -1,7 +1,5 @@
 import superagent from 'superagent'
-import { browserHistory } from 'react-router'
 import { routeActions } from 'react-router-redux'
-import { uuidv4 } from 'node-uuid'
 import { Map, Set } from 'immutable'
 
 import {

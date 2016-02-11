@@ -29,6 +29,7 @@ const actionMap = (dispatch) => {
 	}
 }
 
+@Radium
 class PlaybookOption extends React.Component {
 	// {
 	// 	"flag": "branch", 
@@ -87,9 +88,10 @@ class PlaybookOption extends React.Component {
 	}
 }
 
-PlaybookOption = Radium(PlaybookOption)
 
-class PlaybookEdit extends React.Component {
+@connect(mapState, actionMap)
+@Radium
+export default class PlaybookEdit extends React.Component {
 	componentWillMount() {
 		this.props.actions.fetchOrNewPlaybook(this.props.params.slug)
 	}
@@ -154,6 +156,3 @@ class PlaybookEdit extends React.Component {
 		</div>
 	}
 }
-
-PlaybookEdit = Radium(PlaybookEdit)
-export default connect(mapState, actionMap)(PlaybookEdit)

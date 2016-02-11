@@ -11,8 +11,6 @@ import {
 	DEPLOY_OPTIONS_LOADED,
 } from '../const'
 
-
-
 const mapState = (state) => {
 	return {
 		...state.deploy,
@@ -28,8 +26,8 @@ const actionMap = (dispatch) => {
 	}
 }
 
-
-
+@connect(mapState, actionMap)
+@Radium
 class DeployOptions extends React.Component {
 	
 
@@ -59,11 +57,10 @@ class DeployOptions extends React.Component {
 	}
 }
 
-DeployOptions = Radium(DeployOptions)
-DeployOptions = connect(mapState, actionMap)(DeployOptions)
 
-
-class DeployButton extends React.Component {
+@connect(mapState, actionMap)
+@Radium
+export default class DeployButton extends React.Component {
 
 	componentWillMount() {
 		console.log(this.props.actions)
@@ -80,6 +77,3 @@ class DeployButton extends React.Component {
 		</div>
 	}
 }
-
-DeployButton = Radium(DeployButton)
-export default connect(mapState, actionMap)(DeployButton)

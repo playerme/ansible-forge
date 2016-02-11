@@ -1,13 +1,11 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Router, Route, IndexRoute, Link } from 'react-router'
+import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'
 import Radium, { StyleRoot } from 'radium'
-import history from './utils/history'
 
 import Deploy from './ui/deploy'
 import Shell from './ui/shell'
-import TempList from './ui/temp-list'
 import PlaybooksIndex from './ui/playbooks-index'
 import ShellIndex from './ui/shells-index'
 import PlaybooksEdit from './ui/playbooks-edit'
@@ -15,6 +13,7 @@ import PlaybooksEdit from './ui/playbooks-edit'
 import store from './store'
 import style from './styles/root'
 
+@Radium
 class Root extends React.Component {
 	render() {
 		return <div style={style.mainContainer}>
@@ -29,8 +28,7 @@ class Root extends React.Component {
 	}
 }
 
-Root = Radium(Root)
-
+@Radium
 class DevRuler extends React.Component {
 	render() {
 		return <div>
@@ -41,7 +39,6 @@ class DevRuler extends React.Component {
 	}
 }
 
-DevRuler = Radium(DevRuler)
 
 class Forge extends React.Component {
 	constructor(props) {
@@ -58,11 +55,10 @@ class Forge extends React.Component {
 
 		return <StyleRoot>
 			<Provider store={store}>
-				<Router history={history}>
+				<Router history={browserHistory}>
 					<Route path="/" component={Root}>
 						<Route path="deploy/:slug" component={Deploy} />
 						<Route path="shell/:id" component={Shell} />
-						<Route path="tempshells" component={TempList} />
 						<Route path="playbooks" component={PlaybooksIndex} />
 						<Route path="playbooks/:slug" component={PlaybooksEdit} />
 						<Route path="shells" component={ShellIndex} />

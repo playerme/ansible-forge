@@ -22,6 +22,7 @@ const actionMap = (dispatch) => {
 	}
 }
 
+@Radium
 class ShellEntry extends React.Component {
 
 	render() {

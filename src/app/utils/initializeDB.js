@@ -1,6 +1,6 @@
 import rethinkdbdash from 'rethinkdbdash'
 import yargs from 'yargs'
-import Forge from '../forge'
+import Forge from '../Forge'
 
 const argv = yargs.argv
 

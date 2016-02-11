@@ -22,7 +22,7 @@ const actionMap = (dispatch) => {
 	}
 }
 
-
+@Radium
 class PlaybookEntry extends React.Component {
 
 	render() {
@@ -45,9 +45,9 @@ class PlaybookEntry extends React.Component {
 
 }
 
-PlaybookEntry = Radium(PlaybookEntry)
-
-class PlaybookIndex extends React.Component {
+@connect(mapState, actionMap)
+@Radium
+export default class PlaybookIndex extends React.Component {
 
 	componentWillMount() {
 		this.props.actions.fetchPlaybooks()
@@ -70,6 +70,3 @@ class PlaybookIndex extends React.Component {
 	}
 
 }
-
-PlaybookIndex = Radium(PlaybookIndex)
-export default connect(mapState, actionMap)(PlaybookIndex)
