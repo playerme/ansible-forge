@@ -1,4 +1,5 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Radium from 'radium'
 
@@ -10,20 +11,29 @@ import {
 	DEPLOY_OPTIONS_LOADED,
 } from '../const'
 
-class DeployOptions extends React.Component {
-	actions(action, extra) {
-		let { dispatch, deployActions } = this.props
 
-		let Actions = {
-			optionChange: (event) => { dispatch(deployActions.optionChange(extra, event)) },
-			optionsPaneToggle: (...args) => { dispatch({type: DEPLOY_OP_TOGGLE}) },
-		}
 
-		return Actions[action]
+const mapState = (state) => {
+	return {
+		...state.deploy,
 	}
+}
+
+const actionMap = (dispatch) => {
+	return {
+		actions: { 
+			...bindActionCreators(DeployActions, dispatch),
+			optionsPaneToggle: () => { dispatch({ type: DEPLOY_OP_TOGGLE }) }
+		}
+	}
+}
+
+
+
+class DeployOptions extends React.Component {
+	
 
 	renderOptions() {
-		//<input value={this.props.currentlySelected.superimportant} onChange={this.actions('optionChange', 'superimportant')} />
 		let options = this.props.options.map((v) => { return <tr key={v.flag} title={v.description}>
 			<td key={v.flag + '-label'} style={style.options.label}><label>{v.label}</label></td>
 			<td key={v.flag + '-opt'} style={style.options.option}>
@@ -32,7 +42,7 @@ class DeployOptions extends React.Component {
 				type={v.type} 
 				value={this.props.currentlySelected.get(v.flag)}
 				checked={this.props.currentlySelected.get(v.flag)}
-				onChange={this.actions('optionChange', {flag: v.flag, type: v.type})} />
+				onChange={this.props.actions.optionChange.bind(null, {flag: v.flag, type: v.type})} />
 			</td></tr> })
 
 		return <table style={style.options.table}><tbody>{options}</tbody></table>
@@ -41,7 +51,7 @@ class DeployOptions extends React.Component {
 	render() {
 		let toggleStyle = (this.props.optionsPane) ? style.paneOpen : style.paneClosed
 		return <div style={style.optionsPane}>
-			<div style={style.paneToggle} onClick={ this.actions('optionsPaneToggle') } >Or do something special...</div>
+			<div style={style.paneToggle} onClick={ this.props.actions.optionsPaneToggle } >Or do something special...</div>
 			<div style={[style.paneContent, toggleStyle]}>
 				{this.renderOptions()}
 			</div>
@@ -50,33 +60,20 @@ class DeployOptions extends React.Component {
 }
 
 DeployOptions = Radium(DeployOptions)
-DeployOptions = connect((state) => {
-	return {
-		...state.deploy,
-		deployActions: DeployActions,
-	}
-})(DeployOptions)
+DeployOptions = connect(mapState, actionMap)(DeployOptions)
 
 
 class DeployButton extends React.Component {
-	actions(action, extra) {
-		let { dispatch, deployActions, params: { slug } } = this.props
-
-		let Actions = {
-			doDeploy: () => { dispatch(deployActions.doDeploy(slug)) },
-			loadPlaybook: () => { dispatch(deployActions.loadPlaybook(slug)) }
-		}
-
-		return Actions[action]
-	}
 
 	componentWillMount() {
-		this.actions('loadPlaybook')()
+		console.log(this.props.actions)
+
+		this.props.actions.loadPlaybook(this.props.params.slug)
 	}
 
 	render() {
 		return <div>
-			<div style={style.button} onMouseUp={this.actions('doDeploy')}>
+			<div style={style.button} onMouseUp={this.props.actions.doDeploy.bind(null, this.props.params.slug)}>
 				Deploy!
 			</div>
 			<DeployOptions />
@@ -85,9 +82,4 @@ class DeployButton extends React.Component {
 }
 
 DeployButton = Radium(DeployButton)
-export default connect((state) => {
-	return {
-		...state.deploy,
-		deployActions: DeployActions,
-	}
-})(DeployButton)
+export default connect(mapState, actionMap)(DeployButton)

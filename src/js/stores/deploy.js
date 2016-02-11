@@ -1,4 +1,5 @@
 import superagent from 'superagent'
+import { routeActions } from 'react-router-redux'
 import history from '../utils/history'
 import { Map, Set } from 'immutable'
 
@@ -99,7 +100,7 @@ export function doDeploy(slug) {
 
 		superagent.post(`/api/deploy/${slug}`).send(data).end((err, res) => {
 			// use redux-router
-			history.pushState(null, `/shell/${res.body.id}`)
+			dispatch(routeActions.push(`/shell/${res.body.id}`))
 		})
 	}
 }

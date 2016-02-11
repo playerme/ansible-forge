@@ -39,3 +39,10 @@ export const DEPLOY_TRIGGER = 'deploy.trigger'
 // PLAYBOOKS
 //
 export const PLAYBOOKS_INDEX_LOADED = 'playbooks.index_loaded'
+export const PLAYBOOKS_EDIT_LOADED = 'playbooks.edit_loaded'
+export const PLAYBOOKS_EDIT_CHANGE = 'playbooks.edit_change'
+export const PLAYBOOKS_EDIT_OPTIONS_ADD = 'playbooks.edit_options.add'
+export const PLAYBOOKS_EDIT_OPTIONS_REMOVE = 'playbooks.edit_options.remove'
+export const PLAYBOOKS_EDIT_OPTIONS_CHANGE = 'playbooks.edit_options.change'
+export const PLAYBOOKS_EDIT_SAVING = 'playbooks.edit_saving'
+export const PLAYBOOKS_EDIT_SAVED = 'playbooks.edit_saved'

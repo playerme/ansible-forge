@@ -55,6 +55,44 @@ const style = {
 			backgroundColor: STYLE_PRIMARY_HOVER
 		}
 	},
+
+	edit: {
+
+		title: {
+			fontWeight: 'bold',
+			whiteSpace: 'nowrap',
+		},
+
+		input: {
+			width: '100%'
+		},
+
+		options: {
+			wrapper: {
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+			},
+
+			label: {
+				display: 'block',
+			},
+
+			cell: {
+				flex: '1 1 100%',
+				textAlign: 'center',
+				fontSize: '0.8em'
+			},
+
+			removeCell: {
+			},
+
+			add: {
+
+			}
+		}
+
+	},
 }
 
 export default style

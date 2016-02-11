@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { routeReducer } from 'react-router-redux'
 
 import shell from './stores/shell'
 import deploy from './stores/deploy'
@@ -12,4 +13,6 @@ export default combineReducers({
 	tempList,
 	playbooks,
 	shellIndex,
+
+	routing: routeReducer,
 })

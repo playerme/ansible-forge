@@ -1,4 +1,5 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Radium from 'radium'
 import { Scrollbars } from 'react-custom-scrollbars'
@@ -7,24 +8,34 @@ import ansi from 'ansi_up'
 import * as ShellActions from '../stores/shell'
 import style from '../styles/shell'
 
+
+const mapState = (state) => {
+	return {
+		...state.shell,
+	}
+}
+
+const actionMap = (dispatch) => {
+	return {
+		actions: {
+			...bindActionCreators(ShellActions, dispatch),
+		}
+	}
+}
+
+
 class Shell extends React.Component {
 
 	componentWillMount() {
-		const { dispatch, shellActions: { loadShell }, params: { id } } = this.props
-
-		dispatch( loadShell(id) )
+		this.props.actions.loadShell(this.props.params.id)
 	}
 
 	componentDidMount() {
-		const { dispatch, shellActions: { listenToShell }, params: { id } } = this.props
-
-		dispatch( listenToShell(id) )
+		this.props.actions.listenToShell(this.props.params.id)
 	}
 
 	componentWillUnmount() {
-		const { dispatch } = this.props
-		
-		dispatch( { type: 'shell.unloaded' } )
+		this.props.actions.unloadShell()
 	}
 
 	componentDidUpdate() {
@@ -66,9 +77,4 @@ class ANSI extends React.Component {
 }
 
 Shell = Radium(Shell)
-export default connect((state) => {
-	return {
-		...state.shell,
-		shellActions: ShellActions,
-	}
-})(Shell)
+export default connect(mapState, actionMap)(Shell)

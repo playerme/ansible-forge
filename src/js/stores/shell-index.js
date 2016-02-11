@@ -13,8 +13,6 @@ export default function reducer(state = initialState, action = {}) {
 
 	let { type, data } = action
 
-	console.log(type)
-
 	switch(type) {
 
 		case SHELL_INDEX_LOADED: 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import Radium from 'radium'
@@ -6,12 +7,33 @@ import Radium from 'radium'
 import * as PlaybookActions from '../stores/playbooks'
 import style from '../styles/playbooks'
 
+
+const mapState = (state) => {
+	return {
+		...state.playbooks
+	}
+}
+
+const actionMap = (dispatch) => {
+	return {
+		actions: {
+			...bindActionCreators(PlaybookActions, dispatch),
+		}
+	}
+}
+
+
 class PlaybookEntry extends React.Component {
 
 	render() {
 
 		return <tr>
-			<td>{this.props.title}</td><td style={style.buttonCell}><Link to={`/deploy/${this.props.slug}`}><button style={style.button}>Go</button></Link></td>
+			<td>{this.props.title}</td>
+			<td style={style.buttonCell}>
+				<Link to={`/deploy/${this.props.slug}`}>
+					<button style={style.button}>Go</button>
+				</Link>
+			</td>
 		</tr>
 
 	}
@@ -22,18 +44,8 @@ PlaybookEntry = Radium(PlaybookEntry)
 
 class PlaybookIndex extends React.Component {
 
-	actions(action) {
-		let { dispatch, playbookActions } = this.props	
-
-		let Actions = {
-			fetchPlaybooks: () => { dispatch(playbookActions.fetchPlaybooks()) },
-		}
-
-		return Actions[action]
-	}
-
 	componentWillMount() {
-		this.actions('fetchPlaybooks')()
+		this.props.actions.fetchPlaybooks()
 	}
 
 	render() {
@@ -55,9 +67,4 @@ class PlaybookIndex extends React.Component {
 }
 
 PlaybookIndex = Radium(PlaybookIndex)
-export default connect((state) => {
-	return {
-		...state.playbooks,
-		playbookActions: PlaybookActions
-	}
-})(PlaybookIndex)
+export default connect(mapState, actionMap)(PlaybookIndex)

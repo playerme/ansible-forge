@@ -90,3 +90,7 @@ export function listenToShell(id) {
 
 	}
 }
+
+export function unloadShell() {
+	return { type: SHELL_UNLOADED }
+}
