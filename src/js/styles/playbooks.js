@@ -3,6 +3,7 @@ import respondTo from './mixins/respondTo'
 import {
 	STYLE_PRIMARY,
 	STYLE_PRIMARY_HOVER,
+	STYLE_WARN
 } from '../const'
 
 const width = {
@@ -32,13 +33,14 @@ const style = {
 
 	headerCell: {
 		textAlign: 'left',
+		width: '100%',
 	},
 
 	buttonCell: {
 		textAlign: 'right',
 	},
 
-	button: {
+	goButton: {
 		appearance: 'none',
 		border: '0',
 		backgroundColor: STYLE_PRIMARY,
@@ -53,6 +55,24 @@ const style = {
 		userSelect: 'none',
 		':hover': {
 			backgroundColor: STYLE_PRIMARY_HOVER
+		}
+	},
+
+	editButton: {
+		appearance: 'none',
+		border: '0',
+		backgroundColor: STYLE_WARN,
+		padding: '5px 15px',
+		// fontWeight: 'bold',
+		fontSize: '1em',
+		color: '#efefef',
+		textAlign: 'center',
+		textShadow: '0px 1px 1px rgba(0,0,0,0.50)',
+		border: '1px solid #860',
+		cursor: 'pointer',
+		userSelect: 'none',
+		':hover': {
+			backgroundColor: '#a60'
 		}
 	},
 

@@ -15,6 +15,12 @@ const style = {
 		...respondTo({ sm: { width: '100vw' } })
 	},
 
+	links: {
+		fontSize: '0.8em',
+		padding: 5,
+		textAlign: 'right',
+	},
+
 	spacerTop: {
 		alignSelf: 'flex-start',
 		// ...respondTo({

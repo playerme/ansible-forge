@@ -30,8 +30,13 @@ class PlaybookEntry extends React.Component {
 		return <tr>
 			<td>{this.props.title}</td>
 			<td style={style.buttonCell}>
+				<Link to={`/playbooks/${this.props.slug}`}>
+					<button ref="edit" style={style.editButton}>Edit</button>
+				</Link>
+			</td>
+			<td style={style.buttonCell}>
 				<Link to={`/deploy/${this.props.slug}`}>
-					<button style={style.button}>Go</button>
+					<button ref="go" style={style.goButton}>Go</button>
 				</Link>
 			</td>
 		</tr>

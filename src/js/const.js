@@ -9,6 +9,7 @@ export const STYLE_TEXT_LIGHT = '#efefef'
 export const STYLE_TEXT_DARK = '#00090c'
 export const STYLE_BREAK_LG = 1200
 export const STYLE_BREAK_SM = 700
+export const STYLE_WARN = "#cc8800"
 
 //
 // live output

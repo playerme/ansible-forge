@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Router, Route, IndexRoute } from 'react-router'
+import { Router, Route, IndexRoute, Link } from 'react-router'
 import { Provider } from 'react-redux'
 import Radium, { StyleRoot } from 'radium'
 import history from './utils/history'
@@ -19,7 +19,11 @@ class Root extends React.Component {
 	render() {
 		return <div style={style.mainContainer}>
 			<div style={style.spacerTop}></div>
-			<div style={style.content}>{this.props.children}</div>
+			<div style={style.content}>{this.props.children}
+				<div style={style.links}>
+					<Link to="/">Forge Home</Link>
+				</div>
+			</div>
 			<div style={style.spacerBottom}></div>
 		</div>
 	}
