@@ -148,7 +148,7 @@ export default class Forge {
 	}
 
 	getPlaybooks(req, res) {
-		this.r.table('playbooks').run().then((d) => {
+		this.r.table('playbooks').orderBy('title').run().then((d) => {
 			res.send(d)
 		})
 	}
