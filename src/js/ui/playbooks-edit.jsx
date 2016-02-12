@@ -75,7 +75,7 @@ class PlaybookOption extends React.Component {
 					type={this.props.type}
 					value={this.props.default} 
 					checked={this.props.default}
-					onChange={this.props.onChange.bind(null, { which: this.props.flag, field: 'default' })} />
+					onChange={this.props.onChange.bind(null, { which: this.props.flag, field: 'default', type: this.props.type })} />
 			</div>
 
 			<div style={s.removeCell}>

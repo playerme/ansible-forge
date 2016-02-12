@@ -206,13 +206,16 @@ export function removeOption(meta) {
 
 export function onOptionChange(meta, ev) {
 	return (dispatch) => {
+
 		let value
 
-		switch(ev.target.type) {
+		switch(meta.type) {
 			case 'checkbox':
 				value = ev.target.checked
+				break
 			default:
 				value = ev.target.value
+				break
 		}
 
 		dispatch({ type: PLAYBOOKS_EDIT_OPTIONS_CHANGE, data: {
