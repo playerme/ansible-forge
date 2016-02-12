@@ -1,5 +1,5 @@
 import rethinkdbdash from 'rethinkdbdash'
-import uuid from 'node-uuid'
+import c from './configurator'
 
 import { generateArgs, spawnAnsible } from './runner'
 
@@ -18,7 +18,10 @@ export default class Forge {
 	//
 	newRethinkDB() {
 		//TODO: configure server paths
-		return rethinkdbdash({db: 'forge'})
+		return rethinkdbdash({
+			...c.rethinkdb,
+			db: 'forge'
+		})
 	}
 
 	getRethinkDB() {

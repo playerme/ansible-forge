@@ -1,0 +1,20 @@
+[webserver]
+port = 2055
+bind = '0.0.0.0'
+
+[ansible]
+# Path to your ansible files. This is relative to where you start forge.
+root = '../Ansible'
+
+	[ansible.env]
+	# These are environment variables set when ansible is ran.
+	# All env vars set when you run Forge are also passed.
+	# Side note: PYTHONUNBUFFERED and ANSIBLE_FORCE_COLOR are always set to 1.
+	ANSIBLE_NOCOWS = 1
+
+[rethinkdb]
+# Everything here is passed directly into rethinkdbdash,
+# see https://github.com/neumino/rethinkdbdash#importing-the-driver
+# for all options.
+# Changing the `db` option will be overriden in app code.
+# Leaving this blank is also an option, it'll do local discovery.

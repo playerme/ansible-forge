@@ -1,8 +1,7 @@
 import rethinkdbdash from 'rethinkdbdash'
-import yargs from 'yargs'
+import { argv } from 'yargs'
 import Forge from '../Forge'
-
-const argv = yargs.argv
+import c from './configurator'
 
 if (argv.database || argv.dev) {
 	const initial_r = rethinkdbdash()
