@@ -112,7 +112,7 @@ export default class Forge {
 		this.r.table('playbooks').filter({ slug: slug }).run().then((d) => {
 			let scheme = d[0].scheme
 
-			let args = generateArgs(scheme, req.body.params)
+			let args = generateArgs(scheme, req.body.flags)
 			
 			this.newShell(slug, args.toString()).then((result) => {
 
