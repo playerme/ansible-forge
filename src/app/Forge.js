@@ -1,7 +1,7 @@
 import rethinkdbdash from 'rethinkdbdash'
 import uuid from 'node-uuid'
 
-import { spawnAnsible } from './runner'
+import { generateArgs, spawnAnsible } from './runner'
 
 // TODO: figure out how to separate this hulking shitty monolith.
 
@@ -107,16 +107,11 @@ export default class Forge {
 		let slug = req.params.slug
 
 		this.r.table('playbooks').filter({ slug: slug }).run().then((d) => {
-			let flags = ""
-			let which = d[0].scheme
+			let scheme = d[0].scheme
 
-			if (req.body.flags !== undefined) {
-				flags = "-e '"+JSON.stringify(req.body.flags)+"'"
-			}
-
-			let args = `${which} ${flags}`.trim()
+			let args = generateArgs(scheme, req.body.params)
 			
-			this.newShell(slug, args).then((result) => {
+			this.newShell(slug, args.toString()).then((result) => {
 
 				let id = result.generated_keys[0]
 

@@ -101,7 +101,13 @@ function seed() {
 				}
 			],
 			"title": "Test the shell output."
-	}]).run()
+	},{
+			"slug": "test-breakouts",
+			"scheme": "-h; exit 1",
+			"requireOptions": false,
+			"options": [],
+			"title": "Test shell breakouts."
+	},]).run()
 	
 }
 
