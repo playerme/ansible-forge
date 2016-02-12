@@ -116,7 +116,7 @@ gulp.task('js', cb => {
 gulp.task('js:build', cb => {
 	return gulp.src(paths.app_js)
 		.pipe(plumber())
-		.pipe(babel({ presets: ['es2015', 'stage-0', 'react'], plugins: ["transform-regenerator", "transform-runtime"] }))
+		.pipe(babel())
 		.pipe(gulp.dest('dist/app'))
 })
 
