@@ -40,8 +40,6 @@ class ShellEntry extends React.Component {
 
 }
 
-ShellEntry = Radium(ShellEntry)
-
 class ShellIndex extends React.Component {
 
 	componentWillMount() {
