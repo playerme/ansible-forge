@@ -8,6 +8,7 @@ import {
 	DEPLOY_OPTION_CHANGE,
 	DEPLOY_OPTIONS_LOADED,
 	DEPLOY_DEPLOYING,
+	DEPLOY_RESET_VIEW,
 } from '../const'
 
 const initialState = {
@@ -77,6 +78,9 @@ export default function reducer(state = initialState, action = {}) {
 				deploying: true
 			}
 
+		case DEPLOY_RESET_VIEW:
+
+			return initialState
 
 		default:
 

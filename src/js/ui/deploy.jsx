@@ -9,6 +9,7 @@ import style from '../styles/deploy'
 import {
 	DEPLOY_OP_TOGGLE,
 	DEPLOY_OPTIONS_LOADED,
+	DEPLOY_RESET_VIEW,
 } from '../const'
 
 const mapState = (state) => {
@@ -21,7 +22,8 @@ const actionMap = (dispatch) => {
 	return {
 		actions: { 
 			...bindActionCreators(DeployActions, dispatch),
-			optionsPaneToggle: () => { dispatch({ type: DEPLOY_OP_TOGGLE }) }
+			optionsPaneToggle: () => { dispatch({ type: DEPLOY_OP_TOGGLE }) },
+			resetView: () => { dispatch({ type: DEPLOY_RESET_VIEW }) }
 		}
 	}
 }
@@ -63,9 +65,11 @@ class DeployOptions extends React.Component {
 export default class DeployButton extends React.Component {
 
 	componentWillMount() {
-		console.log(this.props.actions)
-
 		this.props.actions.loadPlaybook(this.props.params.slug)
+	}
+
+	componentWillUnmount() {
+		this.props.actions.resetView()
 	}
 
 	render() {

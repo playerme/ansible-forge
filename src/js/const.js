@@ -34,6 +34,7 @@ export const DEPLOY_OPTION_CHANGE = 'deploy.option_change'
 export const DEPLOY_OPTIONS_LOADED = 'deploy.options_loaded'
 export const DEPLOY_OP_TOGGLE = 'deploy.op_toggle'
 export const DEPLOY_TRIGGER = 'deploy.trigger'
+export const DEPLOY_RESET_VIEW = 'deploy.reset_view'
 
 
 //
