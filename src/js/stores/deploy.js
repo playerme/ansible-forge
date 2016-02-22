@@ -2,6 +2,8 @@ import superagent from 'superagent'
 import { routeActions } from 'react-router-redux'
 import { Map, Set } from 'immutable'
 
+import * as toast from './toaster'
+
 import {
 	DEPLOY_TRIGGER,
 	DEPLOY_OP_TOGGLE,
@@ -102,7 +104,16 @@ export function doDeploy(slug) {
 		}
 
 		superagent.post(`/api/deploy/${slug}`).send(data).end((err, res) => {
-			// use redux-router
+			if (err !== null) {
+				if (res.statusCode === 400) {
+					dispatch(toast.error({body: res.body.msg}))
+				} else {
+					dispatch(toast.error({title: "Oops!", body: err.message}))
+				}
+
+				return;
+			}
+
 			dispatch(routeActions.push(`/shell/${res.body.id}`))
 		})
 	}
@@ -126,6 +137,16 @@ export function loadPlaybook(slug) {
 	return (dispatch) => {
 
 		superagent.get(`/api/playbook/${slug}`).end((err, res) => {
+
+			if (err !== null) {
+				if (res.statusCode === 404) {
+					dispatch(toast.error({body: res.body.msg}, 0))
+				} else {
+					dispatch(toast.error({title: "Oops!", body: err.message}))
+				}
+
+				return;
+			}
 
 			dispatch({type: DEPLOY_OPTIONS_LOADED, data: res.body })
 

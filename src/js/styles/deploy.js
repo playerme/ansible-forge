@@ -1,8 +1,13 @@
 import specialBorders from './mixins/borders'
 
+import {
+	STYLE_PRIMARY,
+	STYLE_PRIMARY_HOVER,
+} from '../const'
+
 const style = {
 	button: {
-		backgroundColor: '#15C822',
+		backgroundColor: STYLE_PRIMARY,
 		padding: '25px 150px',
 		color: '#efefef',
 		textAlign: 'center',
@@ -12,6 +17,14 @@ const style = {
 		border: '1px solid #182',
 		cursor: 'pointer',
 		userSelect: 'none',
+		':hover': {
+			backgroundColor: STYLE_PRIMARY_HOVER,
+		}
+	},
+
+	label: {
+		margin: 0,
+		fontSize: '0.8rem'
 	},
 	
 	optionsPane: {

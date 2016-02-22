@@ -79,7 +79,7 @@ class PlaybookOption extends React.Component {
 			</div>
 
 			<div style={s.removeCell}>
-				<button onClick={this.props.onRemove.bind(null, { which: this.props.flag })}>Remove</button>
+				<button style={s.removeButton} onClick={this.props.onRemove.bind(null, { which: this.props.flag })}><i className="fa fa-trash-o" /></button>
 			</div>
 
 			</div>
@@ -146,13 +146,14 @@ export default class PlaybookEdit extends React.Component {
 
 			<tr>
 			<td colSpan="2">
-				<button style={s.options.add} onClick={this.props.actions.addBlankOption}>Add Option</button>
+				<button ref="aob" style={s.options.add} onClick={this.props.actions.addBlankOption}> <i className="fa fa-plus" /> Add Option</button>
 			</td>
 			</tr>
 
 			</tbody></table>
 
-			<button style={s.save} onClick={this.props.actions.saveOrNewPlaybook.bind(null, this.props.params.slug)}>Save</button>
+			<button disabled={this.props.saving || this.props.deleting} ref="saveb" style={s.save} onClick={this.props.actions.saveOrNewPlaybook.bind(null, this.props.params.slug)}> <i className="fa fa-save" /> Save</button>&nbsp;
+			<button disabled={this.props.saving || this.props.deleting} ref="delb" style={s.delete} onClick={this.props.actions.deletePlaybook.bind(null, this.props.params.slug)}> <i className="fa fa-trash" /> Delete</button>
 		</div>
 	}
 }

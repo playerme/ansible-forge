@@ -31,12 +31,12 @@ class PlaybookEntry extends React.Component {
 			<td>{this.props.title}</td>
 			<td style={style.buttonCell}>
 				<Link to={`/playbooks/${this.props.slug}`}>
-					<button ref="edit" style={style.editButton}>Edit</button>
+					<button ref="edit" style={style.editButton}><i className="fa fa-pencil"/></button>
 				</Link>
 			</td>
 			<td style={style.buttonCell}>
 				<Link to={`/deploy/${this.props.slug}`}>
-					<button ref="go" style={style.goButton}>Go</button>
+					<button ref="go" style={style.goButton}><i className="fa fa-arrow-right"/></button>
 				</Link>
 			</td>
 		</tr>
@@ -64,6 +64,12 @@ export default class PlaybookIndex extends React.Component {
 				<tr><th style={style.headerCell}>Playbooks</th><th></th></tr>
 
 				{playbooks}
+
+				<tr><td colSpan="3">
+					<Link to="/playbooks/new">
+						<button style={style.newButton}><i className="fa fa-plus" /> New Playbook</button>
+					</Link>
+				</td></tr>
 
 			</tbody></table>
 		</div>

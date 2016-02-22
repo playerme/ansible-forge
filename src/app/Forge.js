@@ -31,14 +31,14 @@ export default class Forge {
 	//
 	// DATA
 	//
-	newShell(scheme, args) {
+	newShell(scheme, args, playbook) {
 
 		let data = {
 			args: args,
 			started_at: this.r.now(),
 			state: 'initializing',
 			frames: [],
-			playbook: scheme,
+			playbook: playbook,
 		}
 
 		return this.r.table('shells').insert([data]).run()
@@ -57,12 +57,13 @@ export default class Forge {
 		frames.push(data)
 		
 		let flush = (state = 'running') => {
-			console.log('flushed')
-			this.r.table('shells').get(id).update({frames: frames, state: state}).run()
+			this.r.table('shells').get(id).update({frames: frames, state: state}).run().catch((err) => {
+				console.error(`shell ${id} flush failed`, err)
+			})
 		}
 
 		if(data.type === 'start') {
-			this.frameIntv[id] = setInterval(flush, 1000*1)
+			this.frameIntv[id] = setInterval(flush, 1000)
 		}
 
 		let state
@@ -110,11 +111,16 @@ export default class Forge {
 		let slug = req.params.slug
 
 		this.r.table('playbooks').filter({ slug: slug }).run().then((d) => {
+				
+			if (d.length === 0) {
+				return res.status(400).send({msg: `Cannot deploy playbook "${slug}", it doesn't exist.`})
+			}
+
 			let scheme = d[0].scheme
 
 			let args = generateArgs(scheme, req.body.flags)
 			
-			this.newShell(slug, args.toString()).then((result) => {
+			this.newShell(slug, args.toString(), d[0]).then((result) => {
 
 				let id = result.generated_keys[0]
 
@@ -122,20 +128,32 @@ export default class Forge {
 
 				spawnAnsible(args, this.handleDeployShell.bind(this, id))
 				
+			}).catch((err) => { 
+				res.status(500).send(err) 
 			})
-			
+		}).catch((err) => { 
+			res.status(500).send(err) 
 		})
 	}
 
 	getDeploy(req, res) {
-		this.getShell(req.params.id).then((row, err) => {
+		this.getShell(req.params.id).then((row) => {
+			
+			if (row === null) {
+				return res.sendStatus(404)
+			}
+
 			res.send(row)
+		}).catch((err) => {
+			res.status(500).send(err)
 		})
 	}
 
 	getDeploys(req, res) {
 		this.indexShells().then((rows, err) => {
 			res.send(rows)
+		}).catch((err) => { 
+			res.status(500).send(err) 
 		})
 	}
 
@@ -143,13 +161,23 @@ export default class Forge {
 		let slug = req.params.slug
 
 		this.r.table('playbooks').filter({ slug: slug }).run().then((d) => {
-			res.send(d[0])
-		}).catch((err) => { res.send(err) })
+			
+			if (d.length === 0) {
+				res.status(404).send({msg: `Playbook "${slug}" not found`})
+			} else {
+				res.send(d[0])
+			}
+
+		}).catch((err) => { 
+			res.status(500).send(err) 
+		})
 	}
 
 	getPlaybooks(req, res) {
 		this.r.table('playbooks').orderBy('title').run().then((d) => {
 			res.send(d)
+		}).catch((err) => {
+			res.status(500).send(err)
 		})
 	}
 
@@ -159,24 +187,41 @@ export default class Forge {
 
 		this.r.table('playbooks').filter({slug: req.params.slug}).update(data).run().then((d) => {
 			res.send(d)
+		}).catch((err) => {
+			res.status(500).send(err)
 		})
 	}
 
 	newPlaybook(req, res) {
-		console.log(req.body)
 
 		let data = req.body.playbook
 
-		// TODO: check if slug collides
+		if (data.title === "" || data.scheme === "" || data.slug === "") {
+			return res.status(400).send({ msg: "Title, Slug, and Scheme must be set." })
+		}
 
-		this.r.table('playbooks').insert([data]).run().then((d) => {
-			res.send(d)
+		this.r.table('playbooks').filter({slug: data.slug}).run().then((d) => {
+			if (d.length !== 0) {
+				res.status(409).send({ msg: `Playbook with slug ${data.slug} already exists.` })
+			} else {
+				this.r.table('playbooks').insert([data]).run().then((d) => {
+					res.send(d)
+				}).catch((err) => {
+					res.status(500).send(err)
+				})
+			}
+
+		}).catch((err) => {
+			res.status(500).send(err)
 		})
+
 	}
 
 	deletePlaybook(req, res) {
 		this.r.table('playbooks').filter({slug: req.params.slug}).delete().run().then((d) => {
 			res.send(d)
+		}).catch((err) => {
+			res.status(500).send(err)
 		})
 	}
 

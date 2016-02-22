@@ -76,8 +76,9 @@ export default class DeployButton extends React.Component {
 		return <div>
 			<div style={style.button} onMouseUp={this.props.actions.doDeploy.bind(null, this.props.params.slug)}>
 				Deploy!
+				<p style={style.label}>({this.props.playbook.title})</p>
 			</div>
-			<DeployOptions />
+			{(this.props.options.count() !== 0) ? <DeployOptions /> : ''}
 		</div>
 	}
 }

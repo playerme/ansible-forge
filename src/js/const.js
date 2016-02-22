@@ -23,6 +23,7 @@ export const SHELL_STATE_RUNNING = 'running'
 export const SHELL_STATE_FINISHED = 'finished'
 export const SHELL_STATE_FAILED = 'failed'
 export const SHELL_UNLOADED = 'shell.unloaded'
+export const SHELL_LOADED = 'shell.loaded'
 export const SHELL_INDEX_LOADED = 'shell.index_loaded'
 
 
@@ -48,3 +49,12 @@ export const PLAYBOOKS_EDIT_OPTIONS_REMOVE = 'playbooks.edit_options.remove'
 export const PLAYBOOKS_EDIT_OPTIONS_CHANGE = 'playbooks.edit_options.change'
 export const PLAYBOOKS_EDIT_SAVING = 'playbooks.edit_saving'
 export const PLAYBOOKS_EDIT_SAVED = 'playbooks.edit_saved'
+export const PLAYBOOKS_EDIT_DELETING = 'playbooks.edit_deleting'
+export const PLAYBOOKS_EDIT_DELETE_DONE = 'playbooks.edit_delete_done'
+
+
+//
+// TOASTER
+//
+export const TOASTER_SHOW = 'toaster.show'
+export const TOASTER_HIDE = 'toaster.hide'

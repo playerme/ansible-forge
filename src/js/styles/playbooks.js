@@ -1,4 +1,5 @@
 import respondTo from './mixins/respondTo'
+import button from './mixins/button'
 
 import {
 	STYLE_PRIMARY,
@@ -41,39 +42,15 @@ const style = {
 	},
 
 	goButton: {
-		appearance: 'none',
-		border: '0',
-		backgroundColor: STYLE_PRIMARY,
-		padding: '5px 15px',
-		// fontWeight: 'bold',
-		fontSize: '1em',
-		color: '#efefef',
-		textAlign: 'center',
-		textShadow: '0px 1px 1px rgba(0,0,0,0.50)',
-		border: '1px solid #182',
-		cursor: 'pointer',
-		userSelect: 'none',
-		':hover': {
-			backgroundColor: STYLE_PRIMARY_HOVER
-		}
+		...button(STYLE_PRIMARY, '#182', STYLE_PRIMARY_HOVER),
+	},
+
+	newButton: {
+		...button('#15f', '#138', '#24a'),
 	},
 
 	editButton: {
-		appearance: 'none',
-		border: '0',
-		backgroundColor: STYLE_WARN,
-		padding: '5px 15px',
-		// fontWeight: 'bold',
-		fontSize: '1em',
-		color: '#efefef',
-		textAlign: 'center',
-		textShadow: '0px 1px 1px rgba(0,0,0,0.50)',
-		border: '1px solid #860',
-		cursor: 'pointer',
-		userSelect: 'none',
-		':hover': {
-			backgroundColor: '#a60'
-		}
+		...button(STYLE_WARN, '#860', '#a60'),
 	},
 
 	edit: {
@@ -84,7 +61,16 @@ const style = {
 		},
 
 		input: {
-			width: '100%'
+			width: '100%',
+		},
+
+		save: {
+			...button(STYLE_PRIMARY, '#182', STYLE_PRIMARY_HOVER),
+			marginLeft: 3
+		},
+
+		delete: {
+			...button('#f30', '#c00', '#c44'),
 		},
 
 		options: {
@@ -104,12 +90,22 @@ const style = {
 				fontSize: '0.8em'
 			},
 
-			removeCell: {
+			removeCell: {},
+
+			removeButton: {
+				...button('#f30', '#c00', '#c44'),
+				fontSize: '0.8em',
+				padding: 5
 			},
 
 			add: {
+				...button('#15f', '#138', '#24a'),
+				fontSize: '0.8em',
+				padding: 5,
+				margin: '5px 0'
+			},
 
-			}
+
 		}
 
 	},

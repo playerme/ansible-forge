@@ -1,8 +1,11 @@
 import io from 'socket.io-client'
 import superagent from 'superagent'
 
+import * as toast from './toaster'
+
 import {
 	SHELL_UNLOADED,
+	SHELL_LOADED,
 	SHELL_START,
 	SHELL_PROGRESS,
 	SHELL_END,
@@ -16,6 +19,8 @@ import {
 const initialState = {
 	data: "",
 	status: SHELL_STATE_UNKNOWN,
+	state: 'unknown',
+	playbook: {},
 }
 
 export default function reducer(state = initialState, action = {}) {
@@ -26,6 +31,7 @@ export default function reducer(state = initialState, action = {}) {
 		case SHELL_START:
 
 			return {
+				...state,
 				data: state.data+data,
 				status: SHELL_STATE_RUNNING
 			}
@@ -33,6 +39,7 @@ export default function reducer(state = initialState, action = {}) {
 		case SHELL_PROGRESS:
 
 			return {
+				...state,
 				data: state.data+data,
 				status: state.status
 			}
@@ -49,6 +56,14 @@ export default function reducer(state = initialState, action = {}) {
 			return {
 				...state,
 				status: SHELL_STATE_FAILED
+			}
+
+		case SHELL_LOADED:
+
+			return {
+				...state,
+				shellState: data.state,
+				playbook: data.playbook,
 			}
 
 		case SHELL_UNLOADED:
@@ -74,6 +89,17 @@ export function loadShell(id) {
 	return (dispatch) => {
 
 		superagent.get(`/api/shell/${id}`).end((err, res) => {
+			if (err !== null) {
+				if (res.statusCode === 404) {
+					dispatch(toast.error({body: res.body.msg}))
+				} else {
+					dispatch(toast.error({title: "Oops!", body: err.message}))
+				}
+
+				return;
+			}
+
+			dispatch({type: SHELL_LOADED, data: res.body})
 			res.body.frames.forEach(frame => dispatch(handleFrame(frame)))
 		})
 

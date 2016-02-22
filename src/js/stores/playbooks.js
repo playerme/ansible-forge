@@ -2,11 +2,15 @@ import superagent from 'superagent'
 import { routeActions } from 'react-router-redux'
 import { Map, Set } from 'immutable'
 
+import * as toast from './toaster'
+
 import {
 	PLAYBOOKS_INDEX_LOADED,
 
 	PLAYBOOKS_EDIT_LOADED,
 	PLAYBOOKS_EDIT_CHANGE,
+	PLAYBOOKS_EDIT_DELETING,
+	PLAYBOOKS_EDIT_DELETE_DONE,
 	PLAYBOOKS_EDIT_SAVING,
 	PLAYBOOKS_EDIT_SAVED,
 	PLAYBOOKS_EDIT_OPTIONS_ADD,
@@ -35,6 +39,7 @@ const initialState = {
 	playbooks: Set(),
 	activePlaybook: Map(emptyPlaybook),
 	saving: false,
+	deleting: false,
 }
 
 
@@ -77,6 +82,20 @@ export default function reducer(state = initialState, action = {}) {
 			return {
 				...state,
 				saving: false
+			}
+
+		case PLAYBOOKS_EDIT_DELETING:
+
+			return {
+				...state,
+				deleting: true
+			}
+
+		case PLAYBOOKS_EDIT_DELETE_DONE:
+
+			return {
+				...state,
+				deleting: false
 			}
 
 		case PLAYBOOKS_EDIT_OPTIONS_ADD:
@@ -125,7 +144,15 @@ export default function reducer(state = initialState, action = {}) {
 export function fetchPlaybooks() {
 	return (dispatch) => {
 		superagent.get('/api/playbooks').end((err, res) => {
+
 			dispatch({ type: PLAYBOOKS_INDEX_LOADED, data: res.body })
+
+			if (res.body.length === 0) {
+
+				dispatch(toast.info({body: "There were no playbooks."}))
+
+			}
+
 		})
 	}
 }
@@ -136,6 +163,15 @@ export function fetchOrNewPlaybook(slug) {
 			dispatch({ type: PLAYBOOKS_EDIT_LOADED, data: emptyPlaybook })
 		} else {
 			superagent.get(`/api/playbook/${slug}`).end((err, res) => {
+				if (err !== null) {
+					if (res.statusCode === 404) {
+						dispatch(toast.error({body: res.body.msg}, 0))
+					} else {
+						dispatch(toast.error({body: err.message}))
+					}
+					return;
+				}
+
 				dispatch({ type: PLAYBOOKS_EDIT_LOADED, data: res.body })
 			})
 		}
@@ -166,10 +202,50 @@ export function saveOrNewPlaybook(slug) {
 		}
 
 		request.send({playbook: activePlaybook}).end((err, res) => {
+			if (err !== null) {
+				dispatch({ type: PLAYBOOKS_EDIT_SAVED })
+
+				if (res.status === 409) {
+					return dispatch(toast.error({title: "Save Error", body: res.body.msg }))
+				} else if (res.status === 400) {
+					return dispatch(toast.error({title: "Save Error", body: res.body.msg }))
+				} else {
+					return dispatch(toast.error({title: "Oops!", body: err.message}))
+				}
+			}
+
 			dispatch({ type: PLAYBOOKS_EDIT_SAVED })
+			dispatch(toast.success({
+				body: "Playbook Saved!",
+			}))
 			dispatch(routeActions.replace(`/playbooks/${activePlaybook.slug}`))
 		})
 
+	}
+}
+
+export function deletePlaybook(slug) {
+	return (dispatch) => {
+
+		dispatch({ type: PLAYBOOKS_EDIT_DELETING })
+
+		if (window.confirm("Are you sure you want to delete this playbook?")) {
+			superagent.delete(`/api/playbook/${slug}`).end((err, res) => {
+				if (err !== null) {
+					dispatch({ type: PLAYBOOKS_EDIT_DELETE_DONE })
+					return dispatch(toast.error({title: "Oops!", body: err.message}))
+				}
+
+				dispatch({ type: PLAYBOOKS_EDIT_DELETE_DONE })
+				dispatch(toast.success({
+					body: "Playbook has been deleted."
+				}))
+				dispatch(routeActions.push('/'))
+			})
+		} else {
+			dispatch({ type: PLAYBOOKS_EDIT_DELETE_DONE })
+		}
+		
 	}
 }
 
@@ -200,7 +276,6 @@ export function addBlankOption() {
 }
 
 export function removeOption(meta) {
-	console.log('removing', meta)
 	return { type: PLAYBOOKS_EDIT_OPTIONS_REMOVE, data: meta }
 }
 

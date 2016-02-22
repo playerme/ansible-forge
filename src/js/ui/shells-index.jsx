@@ -29,7 +29,7 @@ class ShellEntry extends React.Component {
 		let state = <div style={[style.stateCommon, style.state[this.props.state]]}>{this.props.state}</div>
 
 		return <tr>
-			<td style={style.bigCell}>{this.props.playbook}</td>
+			<td style={style.bigCell}>{this.props.playbook.title}</td>
 			<td style={{whiteSpace: 'nowrap'}}>
 				{moment(this.props.started_at).fromNow()}</td>
 			<td>{state}</td>
@@ -40,7 +40,9 @@ class ShellEntry extends React.Component {
 
 }
 
-class ShellIndex extends React.Component {
+@connect(mapState, actionMap)
+@Radium
+export default class ShellIndex extends React.Component {
 
 	componentWillMount() {
 		this.props.actions.fetchShells()
@@ -63,6 +65,3 @@ class ShellIndex extends React.Component {
 	}
 
 }
-
-ShellIndex = Radium(ShellIndex)
-export default connect(mapState, actionMap)(ShellIndex)

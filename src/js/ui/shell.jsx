@@ -40,7 +40,9 @@ export default class Shell extends React.Component {
 	}
 
 	componentDidUpdate() {
-		this.refs.scrollbars.scrollToBottom()
+		if (this.props.shellState === 'running' || this.props.shellState === 'started') {
+			this.refs.scrollbars.scrollToBottom()
+		}
 	}
 
 	render() {
@@ -55,7 +57,7 @@ export default class Shell extends React.Component {
 
 		return <div className="live-output">
 			<div style={style.header}>
-				<div style={style.title}>Doing live output test....</div>
+				<div style={style.title}>Running: {this.props.playbook.title}</div>
 				<div style={style.status}>{status}</div>
 			</div>
 			<div style={style.shell}>

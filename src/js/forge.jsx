@@ -10,6 +10,8 @@ import PlaybooksIndex from './ui/playbooks-index'
 import ShellIndex from './ui/shells-index'
 import PlaybooksEdit from './ui/playbooks-edit'
 
+import ToastContainer from './ui/toaster'
+
 import store from './store'
 import style from './styles/root'
 
@@ -55,16 +57,19 @@ class Forge extends React.Component {
 
 		return <StyleRoot>
 			<Provider store={store}>
-				<Router history={browserHistory}>
-					<Route path="/" component={Root}>
-						<Route path="deploy/:slug" component={Deploy} />
-						<Route path="shell/:id" component={Shell} />
-						<Route path="playbooks" component={PlaybooksIndex} />
-						<Route path="playbooks/:slug" component={PlaybooksEdit} />
-						<Route path="shells" component={ShellIndex} />
-						<IndexRoute component={PlaybooksIndex} />
-					</Route>
-				</Router>
+				<div>
+					<Router history={browserHistory}>
+						<Route path="/" component={Root}>
+							<Route path="deploy/:slug" component={Deploy} />
+							<Route path="shell/:id" component={Shell} />
+							<Route path="playbooks" component={PlaybooksIndex} />
+							<Route path="playbooks/:slug" component={PlaybooksEdit} />
+							<Route path="shells" component={ShellIndex} />
+							<IndexRoute component={PlaybooksIndex} />
+						</Route>
+					</Router>
+					<ToastContainer position="bottom-right" />
+				</div>
 			</Provider>
 			{devRuler}
 		</StyleRoot>
